@@ -1,0 +1,24 @@
+metrics:
+  runs_total:
+    type: counter
+    description: "runs info from databricks"
+    labels: 
+    - "job_id"
+    - "run_id"
+    - "number_in_job"
+    - "original_attempt_run_id"
+    - "life_cycle_state"
+    - "result_state"
+    - "user_cancelled_or_timedout"
+    - "start_time"
+    - "setup_duration"
+    - "execution_duration"
+    - "cleanup_duration"
+    - "end_time"
+    - "trigger"
+    - "creator_user_name"
+    - "run_name"
+    - "run_type"
+    - "attempt_number"
+    - "format"
+
