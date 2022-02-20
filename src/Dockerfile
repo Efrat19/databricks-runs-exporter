@@ -10,7 +10,7 @@ COPY go.sum go.sum
 RUN go mod download
 
 # Copy the go source
-COPY *.go .
+COPY *.go ./
 COPY metrics.yaml metrics.yaml
 
 # Build
