@@ -10,8 +10,7 @@ COPY go.sum go.sum
 RUN go mod download
 
 # Copy the go source
-COPY main.go main.go
-COPY databricks_client.go databricks_client.go
+COPY *.go .
 COPY metrics.yaml metrics.yaml
 
 # Build
