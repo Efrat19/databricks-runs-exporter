@@ -23,12 +23,12 @@ spec:
         - name: DATABRICKS_HOST
           valueFrom:
             secretKeyRef:
-              name: databricks
+              name: databricks-creds
               key: host
         - name: DATABRICKS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: databricks
+              name: databricks-creds
               key: token
         resources:
           requests:

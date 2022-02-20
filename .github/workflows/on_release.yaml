@@ -2,12 +2,15 @@
 name: Release Kubeload Stable Version
 on: [release]
 jobs:
-  push-manifest:
-    runs-on: [ubuntu-latest]
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: setup docker(Without version)
-        uses: docker-practice/actions-setup-docker@master
-      - run: |
-          docker manifest create efrat19/databricks-runs-exporter:stable efrat19/databricks-runs-exporter:amd64-${{ github.sha }}]
-          docker login -u ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
-          docker manifest push efrat19/databricks-runs-exporter:stable
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: efrat19/databricks-runs-exporter
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        tags: "stable,${{ github.tag }}"
+        context: src
