@@ -3,7 +3,8 @@ Prometheus Exporter for databricks runs.
 
 ## Installation
 ```bash
-kubectl create secret generic databricks-creds --from-literal=host=<databricks_host>  --from-literal=token=<databricks_token>
+kubectl create secret generic databricks-creds -n monitoring \ 
+--from-literal=host=<databricks_host>  --from-literal=token=<databricks_token>
 kubectl apply -f https://github.com/Efrat19/databricks-runs-exporter/blob/main/k8s.yaml
 ```
 ## Metrics
