@@ -14,7 +14,7 @@ Prometheus Exporter for databricks runs.
 | Variable                      | Default | Description |
 | ----------------------------- | ------- | -----------------------------
 | DATABRICKS_HOST               | ""      | Databricks host URL, required
-| DATABRICKS_TOKEN              | ""      | Databricks token with permissions to list jobs 
+| DATABRICKS_TOKEN              | ""      | Databricks token with permissions to list jobs, required
 | RUNS_SCRAPE_LIMIT             | 50      | Max runs to scrape on each interval. increase only if you have more then RUNS_SCRAPE_LIMIT runs created in a given RUNS_SCRAPE_TIMESPAN_SECONDS
 | RUNS_SCRAPE_TIMESPAN_SECONDS  | 10      | How much seconds ago to scrape, match this number with your scrape interval (usually 10s). The exporter will also take a safety margin of 10 more seconds to ensure no runs are lost due to unexpected delays.
 
