@@ -10,4 +10,4 @@ RUN go build .
 
 CMD ["./app"]
 
-EXPOSE "9970"
+EXPOSE "9971"

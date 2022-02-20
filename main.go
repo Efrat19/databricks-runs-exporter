@@ -28,7 +28,7 @@ func main() {
 	// Get OS parameter
 	// =====================
 	flag.StringVar(&configFile, "config", "metrics.yaml", "configuration file")
-	flag.StringVar(&bind, "bind", "0.0.0.0:9970", "bind")
+	flag.StringVar(&bind, "bind", "0.0.0.0:9971", "bind")
 	flag.Parse()
 
 	// =====================

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: databricks-runs-exporter
+  name: databricks-runs-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: databricks-runs-exporter
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: databricks-runs-exporter
+    spec:
+      containers:
+      - image: efrat19/databricks-runs-exporter
+        name: databricks-runs-exporter
+        env: 
+        - name: DATABRICKS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: databricks
+              key: host
+        - name: DATABRICKS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: databricks
+              key: token
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 20m
+            memory: 40Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: databricks-runs-exporter
+  name: databricks-runs-exporter
+  namespace: monitoring
+spec:
+  ports:
+  - name: http-metrics
+    port: 9971
+    protocol: TCP
+    targetPort: 9971
+  selector:
+    app: databricks-runs-exporter
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: databricks-runs-exporter
+  namespace: monitoring
+  labels:
+    app: databricks-runs-exporter
+spec:
+  endpoints:
+  - path: /metrics
+    port: http-metrics
+    interval: 10s
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  selector:
+    matchLabels:
+      app: databricks-runs-exporter
