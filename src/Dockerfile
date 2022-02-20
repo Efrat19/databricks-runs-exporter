@@ -12,9 +12,8 @@ RUN go mod download
 # Copy the go source
 COPY *.go ./
 COPY metrics.yaml metrics.yaml
-
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o databricks-runs-exporter main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o databricks-runs-exporter .
 
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
