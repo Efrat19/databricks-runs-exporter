@@ -20,6 +20,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o databricks-runs-exporte
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 COPY --from=builder /workspace/databricks-runs-exporter .
+COPY metrics.yaml metrics.yaml
 USER 65532:65532
 
 ENTRYPOINT ["/databricks-runs-exporter"]
