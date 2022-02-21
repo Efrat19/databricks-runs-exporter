@@ -37,13 +37,13 @@ func init() {
 	if !strings.HasPrefix(databricksHost, "https://") {
 		databricksHost = fmt.Sprintf("https://%s", databricksHost)
 	}
-
+	log.Infof("Starting client... databricks host is %s, runs scrape timespan seconds is %d", databricksHost, runsScrapeTimespanSeconds)
 }
 
 func getScrapeWindowEdges() (int64, int64) {
 	to := time.Now()
 	safetyMargin := 10
-	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
+	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Hour))
 	from := to.Add(span)
 	return from.Unix(), to.Unix()
 }
@@ -135,7 +135,7 @@ func GetRuns() (*[]Run, error) {
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return nil, err
 	}
-	log.Infof("Collected %d runs (max is %d) started between %d and %d\n", len(apiResponse.Runs), runsScrapeLimit, startTimeFrom, startTimeTo)
+	log.Infof("Collected %d runs (max is %d) started between %d and %d", len(apiResponse.Runs), runsScrapeLimit, startTimeFrom, startTimeTo)
 	return dedupByRunID(formatRuns(&apiResponse.Runs)), nil
 }
 
