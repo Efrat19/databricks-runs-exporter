@@ -45,7 +45,7 @@ func getScrapeWindowEdges() (int64, int64) {
 	safetyMargin := 10
 	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
 	from := to.Add(span)
-	return to.Unix(), from.Unix()
+	return from.Unix(), to.Unix()
 }
 
 func (r *Run) ToLabelValues(labels []string) ([]string, error) {
@@ -132,8 +132,10 @@ func GetRuns() (*[]Run, error) {
 		return nil, err
 	}
 	var apiResponse *ApiResponse
-	json.Unmarshal(body, &apiResponse)
-	log.Infof("Collected %d runs started between %d and %d\n", runsScrapeLimit, startTimeFrom, startTimeTo)
+	if err := json.Unmarshal(body, &apiResponse); err != nil {
+		return nil, err
+	}
+	log.Infof("Collected up to %d runs started between %d and %d\n", runsScrapeLimit, startTimeFrom, startTimeTo)
 	return dedupByRunID(formatRuns(&apiResponse.Runs)), nil
 }
 
