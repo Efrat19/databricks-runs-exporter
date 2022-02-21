@@ -27,7 +27,7 @@ func init() {
 	databricksHost = getEnv("DATABRICKS_HOST", "")
 	databricksToken = getEnv("DATABRICKS_TOKEN", "")
 	runsScrapeLimit, err = strconv.Atoi(getEnv("RUNS_SCRAPE_LIMIT", "50"))
-	runsScrapeTimespanSeconds, err = strconv.Atoi(getEnv("RUNS_SCRAPE_TIMESPAN_SECONDS", "10"))
+	runsScrapeTimespanSeconds, err = strconv.Atoi(getEnv("RUNS_SCRAPE_TIMESPAN_SECONDS", "86400"))
 	if err != nil {
 		panic(err)
 	}
@@ -42,8 +42,7 @@ func init() {
 
 func getScrapeWindowEdges() (int64, int64) {
 	to := time.Now()
-	safetyMargin := 10
-	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
+	span := time.Duration((-runsScrapeTimespanSeconds ) * int(time.Second))
 	from := to.Add(span)
 	return from.UnixMilli(), to.UnixMilli()
 }
