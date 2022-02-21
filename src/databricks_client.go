@@ -37,7 +37,7 @@ func init() {
 	if !strings.HasPrefix(databricksHost, "https://") {
 		databricksHost = fmt.Sprintf("https://%s", databricksHost)
 	}
-	log.Infof("Starting client... databricks host is %s, runs scrape timespan seconds is %d", databricksHost, runsScrapeTimespanSeconds)
+	log.Infof("Starting client... databricks host is %s, runs scrape timespan is %ds", databricksHost, runsScrapeTimespanSeconds)
 }
 
 func getScrapeWindowEdges() (int64, int64) {
