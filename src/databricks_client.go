@@ -43,9 +43,9 @@ func init() {
 func getScrapeWindowEdges() (int64, int64) {
 	to := time.Now()
 	safetyMargin := 10
-	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Hour))
+	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
 	from := to.Add(span)
-	return from.Unix(), to.Unix()
+	return from.UnixMilli(), to.UnixMilli()
 }
 
 func (r *Run) ToLabelValues(labels []string) ([]string, error) {
