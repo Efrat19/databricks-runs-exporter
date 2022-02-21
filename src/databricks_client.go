@@ -42,7 +42,8 @@ func init() {
 
 func getScrapeWindowEdges() (int64, int64) {
 	to := time.Now()
-	span := time.Duration((-runsScrapeTimespanSeconds ) * int(time.Second))
+	safetyMargin := 5
+	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
 	from := to.Add(span)
 	return from.UnixMilli(), to.UnixMilli()
 }
