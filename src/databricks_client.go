@@ -135,7 +135,7 @@ func GetRuns() (*[]Run, error) {
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return nil, err
 	}
-	log.Infof("Collected %d runs (max is %s) started between %d and %d\n", len(&apiResponse.Runs), runsScrapeLimit, startTimeFrom, startTimeTo)
+	log.Infof("Collected %d runs (max is %s) started between %d and %d\n", len(apiResponse.Runs), runsScrapeLimit, startTimeFrom, startTimeTo)
 	return dedupByRunID(formatRuns(&apiResponse.Runs)), nil
 }
 
