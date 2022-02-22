@@ -17,7 +17,7 @@ spec:
         app: databricks-runs-exporter
     spec:
       containers:
-      - image: efrat19/databricks-runs-exporter
+      - image: efrat19/databricks-runs-exporter:stable
         name: databricks-runs-exporter
         env: 
         - name: DATABRICKS_HOST
