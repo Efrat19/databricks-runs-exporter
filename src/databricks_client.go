@@ -27,7 +27,7 @@ func init() {
 	databricksHost = getEnv("DATABRICKS_HOST", "")
 	databricksToken = getEnv("DATABRICKS_TOKEN", "")
 	runsScrapeLimit, err = strconv.Atoi(getEnv("RUNS_SCRAPE_LIMIT", "50"))
-	runsScrapeTimespanSeconds, err = strconv.Atoi(getEnv("RUNS_SCRAPE_TIMESPAN_SECONDS", "86400"))
+	runsScrapeTimespanSeconds, err = strconv.Atoi(getEnv("RUNS_SCRAPE_TIMESPAN_SECONDS", "10"))
 	if err != nil {
 		panic(err)
 	}
