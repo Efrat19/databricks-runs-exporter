@@ -110,10 +110,10 @@ func dedupByRunID(runs *[]Run) *[]Run {
 }
 
 func getRunsInScrapeWindow(runs *[]Run) *[]Run {
-	startTimeFrom, startTimeTo := getScrapeWindowEdges()
+	fromTime, toTime := getScrapeWindowEdges()
 	inWindow := []Run{}
 	for _, run := range *runs {
-		if run.StartTime <= startTimeTo || run.EndTime >= startTimeFrom {
+		if run.StartTime <= toTime || run.EndTime >= fromTime {
 			inWindow = append(inWindow, run)
 		}
 	}
