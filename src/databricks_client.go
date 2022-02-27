@@ -21,12 +21,14 @@ var databricksHost string
 var databricksToken string
 var runsScrapeLimit int
 var runsScrapeTimespanSeconds int
+var maxRunDurationSeconds int
 
 func init() {
 	var err error
 	databricksHost = getEnv("DATABRICKS_HOST", "")
 	databricksToken = getEnv("DATABRICKS_TOKEN", "")
 	runsScrapeLimit, err = strconv.Atoi(getEnv("RUNS_SCRAPE_LIMIT", "50"))
+	maxRunDurationSeconds, err = strconv.Atoi(getEnv("MAX_RUN_DURATION_SECONDS", "3600"))
 	runsScrapeTimespanSeconds, err = strconv.Atoi(getEnv("RUNS_SCRAPE_TIMESPAN_SECONDS", "10"))
 	if err != nil {
 		panic(err)
@@ -42,8 +44,14 @@ func init() {
 
 func getScrapeWindowEdges() (int64, int64) {
 	to := time.Now()
-	safetyMargin := 10
-	span := time.Duration((-runsScrapeTimespanSeconds - safetyMargin) * int(time.Second))
+	span := time.Duration((- runsScrapeTimespanSeconds ) * int(time.Second))
+	from := to.Add(span)
+	return from.UnixMilli(), to.UnixMilli()
+}
+
+func getRequestWindowEdges() (int64, int64) {
+	to := time.Now()
+	span := time.Duration((- maxRunDurationSeconds ) * int(time.Second))
 	from := to.Add(span)
 	return from.UnixMilli(), to.UnixMilli()
 }
@@ -101,6 +109,17 @@ func dedupByRunID(runs *[]Run) *[]Run {
 	return &unique
 }
 
+func getRunsInScrapeWindow(runs *[]Run) *[]Run {
+	startTimeFrom, startTimeTo := getScrapeWindowEdges()
+	inWindow := []Run{}
+	for _, run := range *runs {
+		if run.StartTime <= startTimeTo || run.EndTime >= startTimeFrom {
+			inWindow = append(inWindow, run)
+		}
+	}
+	return &inWindow
+}
+
 func sendApiRequest(url string, method string) ([]byte, error) {
 	client := &http.Client{
 		Timeout: time.Second * 10,
@@ -125,7 +144,7 @@ func sendApiRequest(url string, method string) ([]byte, error) {
 }
 
 func GetRuns() (*[]Run, error) {
-	startTimeFrom, startTimeTo := getScrapeWindowEdges()
+	startTimeFrom, startTimeTo := getRequestWindowEdges()
 	url := fmt.Sprintf("%s/api/2.0/jobs/runs/list?limit=%d&start_time_from=%d&start_time_to=%d", databricksHost, runsScrapeLimit, startTimeFrom, startTimeTo)
 	body, err := sendApiRequest(url, "GET")
 	if err != nil {
@@ -136,7 +155,7 @@ func GetRuns() (*[]Run, error) {
 		return nil, err
 	}
 	log.Infof("Collected %d runs (max is %d) started between %d and %d", len(apiResponse.Runs), runsScrapeLimit, startTimeFrom, startTimeTo)
-	return dedupByRunID(formatRuns(&apiResponse.Runs)), nil
+	return getRunsInScrapeWindow(formatRuns(&apiResponse.Runs)), nil
 }
 
 func getEnv(key, fallback string) string {
