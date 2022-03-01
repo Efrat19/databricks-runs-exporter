@@ -77,7 +77,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "Daily transfer of yad1 leads from API to S3."
+                  ""
                 ],
                 "prefix": "All except:",
                 "readOnly": true
