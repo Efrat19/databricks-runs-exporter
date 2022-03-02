@@ -25,7 +25,7 @@ kubectl apply -f https://raw.githubusercontent.com/Efrat19/databricks-runs-expor
 | DATABRICKS_HOST               | ""      | Databricks host URL, required
 | DATABRICKS_TOKEN              | ""      | Databricks token with permissions to list jobs, required
 | RUNS_SCRAPE_LIMIT             | 50      | Max runs to scrape on each interval. Increase if you have more then `$RUNS_SCRAPE_LIMIT` runs created within a given `$MAX_RUN_DURATION_SECONDS`
-| RUNS_SCRAPE_TIMESPAN_SECONDS  | 10      | How much seconds ago to look for created jobs. Match this value to your scrape interval (which is usually 10s)
+| RUNS_SCRAPE_TIMESPAN_SECONDS  | 10      | Match this value to your scrape interval (which is usually 10s)
 | MAX_RUN_DURATION_SECONDS      | 3600    | The duration of your slowest job, so the exporter knows how long ago to look for it. defaults to 1h
 
 ## Grafana Dahsboard
