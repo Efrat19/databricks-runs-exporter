@@ -150,6 +150,7 @@ func GetRuns() (*[]Run, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("%q", body)
 	var apiResponse *ApiResponse
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return nil, err
