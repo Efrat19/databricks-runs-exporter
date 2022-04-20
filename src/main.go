@@ -89,7 +89,7 @@ func (e *QueryCollector) Collect(ch chan<- prometheus.Metric) {
 	log.Infof("Collecting runs...")
 	runs, err := GetRuns()
 	if err != nil {
-		log.Errorf("Failed to get runs: %s", err)
+		log.Infof("Failed to get runs: %s", err)
 	}
 	e.collectRunsTotal(runs, ch)
 }
