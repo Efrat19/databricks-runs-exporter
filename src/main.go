@@ -19,6 +19,7 @@ var config Config
 
 const (
 	collector = "databricks_exporter"
+	RunsTotal = "runs_total"
 )
 
 func main() {
@@ -93,10 +94,6 @@ func (e *QueryCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 	e.collectRunsTotal(runs, ch)
 }
-
-const (
-	RunsTotal string = "runs_total"
-)
 
 func (e *QueryCollector) collectRunsTotal(runs *[]Run, ch chan<- prometheus.Metric) {
 	// Execute each queries in metrics
